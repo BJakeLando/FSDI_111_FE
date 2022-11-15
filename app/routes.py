@@ -38,9 +38,9 @@ def task_form():
 def create_task():
     raw_data = request.form
     task_json = {
-        "title": raw_data.get["title"],
-        "subtitle": raw_data.get["subtitle"],
-        "body": raw_data.get["body"]
+        "title": raw_data.get("title"),
+        "subtitle": raw_data.get("subtitle"),
+        "body": raw_data.get("body")
     }
     response = requests.post(BACKEND_URL, json=task_json)
     if response.status_code == 201:
@@ -48,27 +48,33 @@ def create_task():
     else:
         return render_template("create_failure.html")
 
-@app.put("/task/new/<int:task_id>")
+@app.get("/task/update")
+def update_form():
+    return render_template("update.html")
+
+@app.post("/task/update/<int:task_id>")
 def update_task():
     raw_data = request.form
     task_json = {
-        "title": raw_data.get["title"],
-        "subtitle": raw_data.get["subtitle"],
-        "body": raw_data.get["body"]
+        "title": raw_data.get("title"),
+        "subtitle": raw_data.get("subtitle"),
+        "body": raw_data.get("body")
     }
-    response = requests.put(BACKEND_URL, json=task_json)
+    response = requests.post(BACKEND_URL, json= task_json)
     if response.status_code == 201:
-        return render_template("create_success.html")
+        return render_template("update_success.html")
     else:
-        return render_template("create_failure.html")
+        return render_template("update_failure.html")
 
 
-@app.delete("/list")
-def delete_task():
-    response = requests.get(BACKEND_URL)
-    response = response.json() #converts python to json dictionary
-    return render_template(
-        "list.html",
-        tasks=response["tasks"]
-    )
+@app.get("/task/delete/<int:task_id>")
+def delete_task(task_id):
+    url = "%s/%s" % (BACKEND_URL, task_id)
+    response = requests.delete(url)
+    if response.status_code == 201:
+        return render_template("delete_success.html")
+    else:
+        return render_template("delete_failure.html")
+
+
 

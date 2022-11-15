@@ -17,12 +17,17 @@
     <tr>
         <td>{{ task["id"] }}</td>
         <td>
-            <a href= "{{url_for('view_task_by_id', task_id=task['id']) }}">{{ task["title"] }}</a>
+            <a href= "{{ url_for('view_task_by_id', task_id=task['id']) }}">
+                {{ task["title"] }}              
+            </a>
         </td>
         <td>{{ task["subtitle"] }}</td>
         <td>{{ task["body"] }}</td>
         <td>{{ task["active"] }}</td>
-        <td>{{ task["delete"]}} <input type="text" value ="X" class="btn btn-success"></td>
+        <td> <a href= "{{url_for('delete_task', task_id=task['id']) }}">
+            {{ ["X"] }}              
+        </a>
+        </td>
     </tr>
     {% endfor %}
 </table>
